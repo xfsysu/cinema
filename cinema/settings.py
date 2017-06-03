@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_test',
-        'USER': 'root',
-        'PASSWORD': 'nothing',
-        'HOST': '192.168.199.191',
+        'NAME': 'sysuxf$db_test',
+        'USER': 'sysuxf',
+        'PASSWORD': 'nothing..123',
+        'HOST': 'sysuxf.mysql.pythonanywhere-services.com',
     }
 }
 
