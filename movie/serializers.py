@@ -1,11 +1,19 @@
-from rest_framework.serializers import ModelSerializer, CharField, EmailField, ValidationError, HyperlinkedModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField, EmailField, ValidationError, HyperlinkedModelSerializer, ReadOnlyField, HyperlinkedRelatedField
 from django.contrib.auth.models import User
-from movie.models import Movie
+from movie.models import Movie, Comment
 
 class MovieListSerializer(HyperlinkedModelSerializer):
+	comments = HyperlinkedRelatedField(many=True, view_name='comment-detail', read_only=True)
 	class Meta:
 		model = Movie
-		fields = ('url', 'id', 'title', 'score', 'quote', 'image_urls')
+		fields = ('url', 'id', 'mName', 'director', 'performer', 'duration', 'score', 'brief', 'image_urls', 'comments')
+
+class CommentSerializer(HyperlinkedModelSerializer):
+	movie = ReadOnlyField(source='movie.mName')
+	class Meta:
+		model = Comment
+		fields = ('url', 'id', 'movie', 'content')
+
 
 class UserDetailSerializer(ModelSerializer):
 	class Meta:
