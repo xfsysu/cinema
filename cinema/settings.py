@@ -85,11 +85,8 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sysuxf$db_test',
-        'USER': 'sysuxf',
-        'PASSWORD': 'nothing..123',
-        'HOST': 'sysuxf.mysql.pythonanywhere-services.com',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

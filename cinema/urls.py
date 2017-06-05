@@ -5,8 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('movie.urls')),
-    url(r'^api/', include('movie.api.urls', namespace='users-api')),
+    url(r'^', include('movie.urls', namespace='users-api')),
 ]
 
 if settings.DEBUG:

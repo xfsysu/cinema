@@ -3,10 +3,10 @@ from rest_framework.serializers import ModelSerializer, CharField, EmailField, V
 from django.contrib.auth.models import User
 from movie.models import Movie
 
-class MovieListSerializer(ModelSerializer):
+class MovieListSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Movie
-		fields = '__all__'
+		fields = ('title', 'score', 'quote', 'image_urls')
 
 class UserDetailSerializer(ModelSerializer):
 	class Meta:
