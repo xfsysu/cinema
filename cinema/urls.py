@@ -1,12 +1,16 @@
 from django.conf.urls import url, include
-from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
+from rest_framework import routers
+from movie import views
+
+# DefaultRouter class automatically creates the API root view for us
+router = routers.DefaultRouter()
+router.register(r'movie', views.MovieListViewSet)
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('movie.urls', namespace='users-api')),
-]
+	url(r'^', include(router.urls)),
+    url(r'^user/$', views.UserDetailAPIView.as_view(), name='user'),
+    url(r'^login/$', views.UserLoginAPIView.as_view(), name='login'),
+    url(r'^register/$', views.UserCreateAPIView.as_view(), name='register'),
 
-if settings.DEBUG:
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

@@ -1,4 +1,3 @@
-from django.contrib.contenttypes.models import ContentType
 from rest_framework.serializers import ModelSerializer, CharField, EmailField, ValidationError, HyperlinkedModelSerializer
 from django.contrib.auth.models import User
 from movie.models import Movie
@@ -6,7 +5,7 @@ from movie.models import Movie
 class MovieListSerializer(HyperlinkedModelSerializer):
 	class Meta:
 		model = Movie
-		fields = ('title', 'score', 'quote', 'image_urls')
+		fields = ('url', 'id', 'title', 'score', 'quote', 'image_urls')
 
 class UserDetailSerializer(ModelSerializer):
 	class Meta:

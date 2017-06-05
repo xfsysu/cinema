@@ -8,7 +8,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from django.contrib.auth.models import User
 from movie.models import Movie
 
-class MovieListAPIView(viewsets.ModelViewSet):
+class MovieListViewSet(viewsets.ModelViewSet):
 	#provides 'list' 'create' 'retrieve' 'update' 'destroy'
 	queryset = Movie.objects.all()
 	serializer_class = MovieListSerializer
