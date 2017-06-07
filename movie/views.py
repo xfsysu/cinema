@@ -1,44 +1,58 @@
-from .serializers import UserCreateSerializer, UserLoginSerializer, UserDetailSerializer, MovieListSerializer, CommentSerializer
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from .serializers import MovieSerializer, CommentSerializer, UserSerializer, OrderSerializer
 from rest_framework import viewsets
-from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from movie.models import Movie, Comment, Order
 from django.contrib.auth.models import User
-from movie.models import Movie, Comment
 
-class MovieListViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
+	queryset = User.objects.all()
+	serializer_class = UserSerializer
+
+
+
+class MovieViewSet(viewsets.ModelViewSet):
 	#provides 'list' 'create' 'retrieve' 'update' 'destroy'
 	queryset = Movie.objects.all()
-	serializer_class = MovieListSerializer
-	permission_classes = [AllowAny]
+	serializer_class = MovieSerializer
+
+
 
 class CommentViewSet(viewsets.ModelViewSet):
 	queryset = Comment.objects.all()
 	serializer_class = CommentSerializer
-	permission_classes = [AllowAny]
-	
 
-class UserDetailAPIView(ListAPIView):
-	serializer_class = UserDetailSerializer
+	def perform_create(self, serializer):
+		serializer.save(user=self.request.user)
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+	queryset = Order.objects.all()
+	serializer_class = OrderSerializer
+
+	def perform_create(self, serializer):
+		serializer.save(user=self.request.user)
+
+
+from django.contrib.auth import get_user_model
+from rest_framework.generics import CreateAPIView
+from .serializers import UserCreateSerializer, UserLoginSerializer
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.response import Response
+
+User = get_user_model()
+
+class UserCreateAPI(CreateAPIView):
 	queryset = User.objects.all()
-	permission_classes = [AllowAny]
-
-class UserCreateAPIView(CreateAPIView):
 	serializer_class = UserCreateSerializer
-	queryset = User.objects.all()
-	permission_classes = [AllowAny]
+
 
 class UserLoginAPIView(APIView):
-	permission_classes = [AllowAny]
-	serializer_class = UserLoginSerializer
-
-	def post(self, request, *args, **kwargs):
-		data = request.data
-		serializer = UserLoginSerializer(data=data)
-		if serializer.is_valid(raise_exception=True):
-			new_data = serializer.data
-			return Response(new_data, status=HTTP_200_OK)
-		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
+    serializer_class = UserLoginSerializer
+    
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = UserLoginSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            new_data = serializer.data
+            return Response(new_data, status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

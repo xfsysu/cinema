@@ -5,15 +5,17 @@ from movie import views
 
 # DefaultRouter class automatically creates the API root view for us
 router = routers.DefaultRouter()
-router.register(r'movie', views.MovieListViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'movie', views.MovieViewSet)
 router.register(r'comment', views.CommentViewSet)
+router.register(r'order', views.OrderViewSet)
+
 
 urlpatterns = [
 	url(r'^', include(router.urls)),
 	url(r'^admin/', admin.site.urls),
-    url(r'^user/$', views.UserDetailAPIView.as_view(), name='user'),
-    url(r'^login/$', views.UserLoginAPIView.as_view(), name='login'),
-    url(r'^register/$', views.UserCreateAPIView.as_view(), name='register'),
-
+    url(r'^api-auth/', include('rest_framework.urls')),
+ 	url(r'^register/$', views.UserCreateAPI.as_view()),
+ 	url(r'^login/$', views.UserLoginAPIView.as_view()),
 ]
 
